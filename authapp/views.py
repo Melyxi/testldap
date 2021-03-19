@@ -3,15 +3,21 @@ from django.shortcuts import render
 from django.contrib import auth
 from django.urls import reverse
 from authapp.forms import *
-from .ldapauth import main as ldaptest, main1
+from .ldapauth import main as ldaptest
 import testldap.settings as set
 from django_auth_ldap.backend import LDAPBackend
 
 def login(request):
     login_form = UserForm(data=request.POST)
+    username = request.POST['username']
+    password = request.POST['password']
+    print(username)
+    print(password)
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
+        print(username)
+        print(password)
         #auth = LDAPBackend()
 
         user = auth.authenticate(request, username=username, password=password)
@@ -44,10 +50,10 @@ def logout(request):
 
 
 def main(request):
-    y = ldaptest()
-    var = set.AUTH_LDAP_BIND_PASSWORD
-    print(var)
+    #y = ldaptest()
+    #var = set.AUTH_LDAP_BIND_PASSWORD
+    #print(var)
     #u = main1()
-    print(y)
+    #print(y)
     #print(u)
-    return render(request, 'authapp/index.html', {'content': y})
+    return render(request, 'authapp/index.html')

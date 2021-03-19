@@ -1,0 +1,34 @@
+
+{% extends 'playbooks/base.html' %}
+
+{% block content %}
+
+  {% include "playbooks/_modal.html" %}
+
+<button id="add_book" class="btn btn-primary" type="button" name="button">add</button>
+
+<button id="add_book1" class="btn btn-primary" type="button" name="button">add</button>
+
+
+
+ {% endblock content %}
+
+{% block extrascripts %}
+
+ <script type="text/javascript">
+
+      $(function () {
+
+          // Create book synchronous
+          function createBookSyncModalForm() {
+            $("#add_book").modalForm({
+
+                formURL: "{% url 'playbooks:playbook_add' %}",
+                modalID: "#create-modal"
+            });
+          }
+          createBookSyncModalForm();
+        })
+ </script>
+{% endblock extrascripts %}
+

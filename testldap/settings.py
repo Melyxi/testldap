@@ -37,7 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'authapp'
+    'bootstrap_modal_forms',
+    'widget_tweaks',
+    'authapp',
+    'playbooks',
+
 ]
 
 MIDDLEWARE = [
@@ -117,6 +121,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
+STATICFILES_FINDERS = [
+    # searches in STATICFILES_DIRS
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    # searches in STATIC subfolder of each app
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 STATIC_URL = '/static/'
 
@@ -126,7 +136,6 @@ STATICFILES_DIRS = (
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 ########################################################################################################################
 # LDAP Authentication Settings
 ########################################################################################################################
@@ -135,13 +144,19 @@ import ldap
 import os
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
+#LDAP_SERVER = 'ipa.demo1.freeipa.org'
 LDAP_SERVER = 'ipa.demo1.freeipa.org'
 AUTH_LDAP_SERVER_URI = 'ldap://' + LDAP_SERVER
+
 #conn = Connection(server, 'uid=admin,cn=users,cn=accounts,dc=demo1,dc=freeipa, dc=org', 'Secret123', auto_bind=True)
 AUTH_LDAP_BIND_DN = 'uid=admin, cn=users, cn=accounts, dc=demo1, dc=freeipa, dc=org'
+#AUTH_LDAP_BIND_DN = 'uid=admin, cn=users, cn=accounts, dc=demo1, dc=freeipa, dc=org'
 os.environ['MY_PASS'] = 'Secret123'
 AUTH_LDAP_BIND_PASSWORD = os.environ.get('MY_PASS')
 AUTH_LDAP_USER_DN_TEMPLATE = 'uid=%(user)s, cn=users, cn=accounts, dc=demo1, dc=freeipa, dc=org'
+
+
+#AUTH_LDAP_USER_DN_TEMPLATE = 'uid=%(user)s, cn=users, cn=accounts, dc=demo1, dc=freeipa, dc=org'
 
 AUTH_LDAP_USER_ATTR_MAP = {
     'first_name': 'givenName',

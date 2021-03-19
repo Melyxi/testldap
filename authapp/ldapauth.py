@@ -24,31 +24,63 @@
 #             print(item['sAMAccountName'])
 
 import ldap
-import testldap.settings as set
+# import testldap.settings as set
 
-def main1():
-    domain = "SAMBA.REDOS"
-    ldap_addr = "ldap://dc.samba.redos"
-    ldap_user = "administrator@SAMBA"
-    ldap_pass = "qqqwww12!"
-    # ad.simple_bind_s("administrator@SAMBA.REDOS", "qqqwww12!")
-    ad = ldap.initialize(ldap_addr)
-    print(ad , 'wew')
-    ldap.set_option(ldap.OPT_REFERRALS, 1)
-    ldap.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
-    auth_tokens = ldap.sasl.gssapi()
-    ad.set_option(ldap.OPT_REFERRALS, 0)
-    ad.sasl_interactive_bind_s('', auth_tokens)
-    print(ad.whoami_s(), "dwdwdwdw")
-    # ad.simple_bind_s(ldap_user, ldap_pass)
+# def main1():
+#     import ldap
+#     con = ldap.initialize('ldaps://185.61.26.170:54732', bytes_mode=False)
+#     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+#     con.bind_s('igor', '123Test123')
+#
+#     results = con.search_s('cn=user,dc=demo1,dc=freeipa, dc=org', ldap.SCOPE_SUBTREE, "(cn=admin)")
+#     print(results)
+    # domain = "SAMBA.REDOS"
+    # ldap_addr = "ldap://dc.samba.redos"
+    # ldap_user = "administrator@SAMBA"
+    # ldap_pass = "qqqwww12!"
+    # # ad.simple_bind_s("administrator@SAMBA.REDOS", "qqqwww12!")
+    # ad = ldap.initialize(ldap_addr)
+    # print(ad , 'wew')
+    # ldap.set_option(ldap.OPT_REFERRALS, 1)
+    # ldap.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
+    # auth_tokens = ldap.sasl.gssapi()
+    # ad.set_option(ldap.OPT_REFERRALS, 0)
+    # ad.sasl_interactive_bind_s('', auth_tokens)
+    # print(ad.whoami_s(), "dwdwdwdw")
+    # # ad.simple_bind_s(ldap_user, ldap_pass)
 
 
-from ldap3 import Server, Connection, ALL
-
+#from ldap3 import Server, Connection,
+from ldap3 import Server, Connection, Tls, SASL, KERBEROS, ALL
+import ssl
+from ldap3.core.exceptions import LDAPBindError
 
 def main():
+
+
+
+    #conn1 = Connection(server1, 'uid=administrator, dc=samba, dc=redos', password='qqqwww12!')
+
+    tls = Tls(validate=ssl.CERT_NONE, version=ssl.PROTOCOL_TLSv1_2)
+    server1 = Server('185.61.26.170:54732', get_info=ALL, tls=tls)
+    print(server1)
+    c = Connection(
+        server1, authentication=SASL, sasl_mechanism=KERBEROS)
+
+    c.bind()
+
+    print(c.extend.standard.who_am_i())
+
+
+    # conn1.bind()
+    # print(conn1)
+    # f = conn1.extend.standard.who_am_i()
+    #print(f)
+
     server = Server('ipa.demo1.freeipa.org', use_ssl=True, get_info=ALL)
-    conn = Connection(server, 'uid=markus, cn=users, cn=accounts,dc=demo1,dc=freeipa,dc=org', 'dsntuhf', auto_bind=True)
+    print(server)
+    conn = Connection(server, 'uid=admin, cn=users, cn=accounts, dc=demo1, dc=freeipa,dc=org', 'Secret123', auto_bind=True)
+
 
     f = conn.extend.standard.who_am_i()
 
@@ -58,4 +90,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    main1()
+    # main1()

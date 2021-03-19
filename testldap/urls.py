@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/',include('authapp.urls', namespace='auth')),
     path('', auth.main, name="index"),
+    path('playbooks/', include('playbooks.urls', namespace='playbooks'))
 ]
