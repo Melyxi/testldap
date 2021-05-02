@@ -9,7 +9,18 @@
 
 <button id="add_book1" class="btn btn-primary" type="button" name="button">add</button>
 
+<table>
+    rwe
+                {% for object in object_list%}
+                    <tr>
+                        <td width="3%"><div class="custom-control custom-checkbox" style="transform: translateX(15%)"><input class="custom-control-input" type="checkbox" id="{{object.id}}" ><label for="{{object.id}}" class="custom-control-label" style="cursor: pointer"></label></div></td>
 
+                        <td>{{object.name}}</td>
+                        <td>{{object.create_at}}</td>
+                        <td>{{object.description}}</td>
+                    </tr>
+                    {% endfor %}
+</table>
 
  {% endblock content %}
 

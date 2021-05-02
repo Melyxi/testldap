@@ -24,7 +24,7 @@ def playbook_add(request):
     pass
 
 def playbook(request):
-    return render(request, 'playbooks/playbook.html')
+    return render(request, 'playbooks/playbook_list.html')
 
 class PlaybookCreateView(BSModalCreateView):
     template_name = 'examples/create_playbook.html'
@@ -33,3 +33,9 @@ class PlaybookCreateView(BSModalCreateView):
     success_message = 'Success: Book was created.'
     success_url = reverse_lazy('playbooks:book')
 
+class PlaybookListView(generic.ListView):
+    model = Playbook
+    template_name = 'playbooks/playbooks_list.html'
+
+    def get_ordering(self):
+        return '-create_at'
